@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TripRepository")
@@ -18,16 +21,19 @@ class Trip
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=10,max=255, minMessage="Votre titre est bien trop court !")   
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=10)   
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url()   
      */
     private $image;
 
@@ -88,4 +94,5 @@ class Trip
 
         return $this;
     }
+
 }
