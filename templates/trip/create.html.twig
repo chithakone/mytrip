@@ -1,16 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <article>
-        <h2>{{ trip.title }}</h2>
-        <div class="metadata">Crée par  le {{ trip.createdAt | date('d/m/Y') }} à 
-            {{ trip.createdAt | date('H:i') }} dans la catégorie </div>
-        <div class="content">
-            <img src="{{ trip.image }}" alt="" />
-            {{ trip.description | raw }}
-        </div>
-    </article>
+{% form_theme formTrip 'bootstrap_4_layout.html.twig' %}
 
+{% block body %}
+
+    {% if editMode %}
+        <h1>Modification d'un trip</h1>
+    {% else %}
+        <h1>Création d'un trip</h1>
+    {% endif %}
+    
+    {{ form_start(formTrip) }}
+
+    {{ form_row(formTrip.title, {'attr': {'placeholder':"Titre du trip"}}) }}
+    {{ form_row(formTrip.category, {'label': 'Continent'}) }}
+    {{ form_row(formTrip.description, {'attr': {'placeholder':"Description du trip"}}) }}
+    {{ form_row(formTrip.image, {'attr': {'placeholder':"Image du trip"}}) }}
+
+    <button type="submit" class="btn btn-success">
+        {% if editMode %}
+            Enregistrer
+        {% else %}
+        Ajouter un trip
+        {% endif %}
+    </button>
+
+    {{ form_end(formTrip) }}
+    
+    
 {% endblock body %}
 
 
