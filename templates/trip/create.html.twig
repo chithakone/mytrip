@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <article>
+        <h2>{{ trip.title }}</h2>
+        <div class="metadata">Crée par  le {{ trip.createdAt | date('d/m/Y') }} à 
+            {{ trip.createdAt | date('H:i') }} dans la catégorie </div>
+        <div class="content">
+            <img src="{{ trip.image }}" alt="" />
+            {{ trip.description | raw }}
+        </div>
+    </article>
+
+{% endblock body %}
+
+
