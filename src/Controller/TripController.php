@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Trip;
 use App\Form\TripType;
+use App\Entity\Comment;
+use App\Form\CommentType;
 use App\Repository\TripRepository;
 
 class TripController extends AbstractController
@@ -71,11 +73,28 @@ class TripController extends AbstractController
     
     /**
      * @Route("/trip/{id}", name="trip_show")
+     * @return type
      */
-    public function show(Trip $trip)
-    { 
+    public function show(Trip $trip, Request $request, EntityManagerInterface $manager)
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        
+        
+        if($form->isSubmitted() && $form->isValid()){
+            $comment->setCreatedAt(new \DateTime())
+                    ->setTrip($trip);
+            
+            $manager->persist($comment);
+            $manager->flush();
+            
+            return $this->redirectToRoute('trip_show', ['id' => $trip->getId()]);
+        }
+        
         return $this->render('trip/show.html.twig', [
-            'trip' => $trip
+            'trip' => $trip,
+            'commentForm' => $form->createView(),
         ]);
     }
     
