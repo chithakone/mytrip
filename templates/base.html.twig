@@ -3,10 +3,72 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="https://bootswatch.com/4/cerulean/bootstrap.min.css">
+        <script src="https://kit.fontawesome.com/86a90268ca.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <!-- ... -->
+
+        {% block stylesheets %}
+            {# 'app' must match the first argument to addEntry() in webpack.config.js #}
+
+
+            <!-- Renders a link tag (if your module requires any CSS)
+                 <link rel="stylesheet" href="/build/app.css"> -->
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="{{ path('home') }}">MyTravelCount</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ path('trip') }}">Trip</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Créer un nouveaux trip</a>
+                </li>
+                
+                {% if not app.user %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Connexion</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Mon compte</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Déconnexion</a>
+                    </li>
+                {% endif %}
+                
+              </ul>
+            </div>
+        </nav>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+        
+        <!-- ... -->
+
+        {% block javascripts %}
+
+            <!-- Renders app.js & a webpack runtime.js file
+                <script src="/build/runtime.js"></script>
+                <script src="/build/app.js"></script> -->
+        {% endblock %}
+        
     </body>
 </html>

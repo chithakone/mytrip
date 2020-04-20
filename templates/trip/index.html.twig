@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section>
+        {% for trip in trips %}
+            <div class="jumbotron">
+                <article>
+                    <h2>{{ trip.title }}</h2>
+                    <div class="metadata">Créé par  le {{ trip.createdAt | date('d/m/Y') }} à {{ trip.createdAt | date('H:i') }}</div>
+                    <div class="content">
+                        <img src="{{ trip.image }}" />
+                        {{ trip.description | raw }}
+                        <a href="{{ path('trip_show', {'id':trip.id}) }}" class="btn btn-primary">Voir le trip</a>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}
+
